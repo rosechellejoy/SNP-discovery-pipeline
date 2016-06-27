@@ -4,15 +4,15 @@ use strict;
 #define variables
 my $file=$ARGV[0]; #input file containing genome: fastq pair count  (eg. IRIS_313-9939: 12)
 my $disk=$ARGV[1]; #directory of the fastq files (eg. 07)
-my $analysis_dir="/home/jeffrey.detras/slurm-scripts/mh63/bam_processing";
-my $input_dir="/home/jeffrey.detras/scratch2/rwing/mh63";
-my $reference_dir="/home/jeffrey.detras/reference/mh63/MH63RS1.LNNK00000000.fa";
-my $scripts_dir="/home/jeffrey.detras/slurm-scripts/scripts/3k_variant_calling_asti";
-my $output_dir="/home/jeffrey.detras/scratch2/rwing/mh63";
-my $picard="/home/jeffrey.detras/software/picard-tools-1.119";
-my $gatk="/home/jeffrey.detras/software/GenomeAnalysisTK-3.2-2/GenomeAnalysisTK.jar";
+my $analysis_dir="/home/rosechelle.oraa/scripts/bam_processing";
+my $input_dir="/home/rosechelle.oraa/scratch2/output";
+my $reference_dir="/home/rosechelle.oraa/reference/chrM.fa";
+my $scripts_dir="/home/rosechelle.oraa/scripts";
+my $output_dir="/home/rosechelle.oraa/scratch2/output";
+my $picard="/home/rosechelle.oraa/software/picard-tools-1.119";
+my $gatk="/home/rosechelle.oraa/software/GenomeAnalysisTK-3.2-2/GenomeAnalysisTK.jar";
 my $jvm="8g";
-my $tmp_dir="/home/jeffrey.detras/scratch2/tmp";
+my $tmp_dir="/home/rosechelle.oraa/scratch2/tmp";
 my $genome="";
 my $count="";
 

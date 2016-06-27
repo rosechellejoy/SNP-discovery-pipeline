@@ -4,25 +4,24 @@ use strict;
 #define variables
 my $file=$ARGV[0]; #input file containing genome: fastq pair count  (eg. IRIS_313-9939: 12)
 my $disk=$ARGV[1]; #directory of the fastq files (eg. 07)
-my $analysis_dir="/home/jeffrey.detras/slurm-scripts/mh63/alignment";
-my $input_dir="/home/jeffrey.detras/IRRI";
-my $reference_dir="/home/jeffrey.detras/reference/mh63/MH63RS1.LNNK00000000.fa";
-my $scripts_dir="/home/jeffrey.detras/slurm-scripts/scripts";
-my $output_dir="/home/jeffrey.detras/scratch2/rwing/mh63";
+my $analysis_dir="/home/rosechelle.oraa/slurm-scripts/mh63/alignment";
+my $input_dir="/home/rosechelle.oraa/$file";
+my $reference_dir="/home/rosechelle.oraa/reference/chrM.fa";
+my $scripts_dir="/home/rosechelle.oraa/scripts";
+my $output_dir="/home/rosechelle.oraa/scratch2/output";
 my $genome="";
 my $count="";
 my $string="";
 
-opendir(DIR, ".");
-my @files = grep(/1\.fq.gz$/,readdir(DIR));		#stores all 1.fq.gz in the current directory to an array
-closedir(DIR);
+opendir($input_dir, ".");
+my @files = grep(/1\.fq.gz$/,readdir($input_dir));		#stores all 1.fq.gz in the directory to an array
+closedir($input_dir);
 
 foreach $file (@files) {	#for each file in files, 
    	$filepath = $file;				
 	$filepath =~ s/1.fq.gz/2.fq.gz/ig;		#replace substring 1.fq.gz with 2.fq.gz
 
-	if (-f $filepath)		#if $file 's pair does not exist
-	{
+	if (-f $filepath){			#if $file 's pair does not exist
 	  print "$file does not have a pair"
 	}
 }
@@ -44,7 +43,7 @@ while (my $line=readline*FILE){
 	#with a sleep of 60s in between job submission to prevent timeout
 	my $execute="$analysis_dir/$disk/submit_slurm.sh";
 	open EXE, ">>", $execute or die $!;
-	print EXE "sbatch $outfile\n";
+	print EXE "\$j = sbatch $outfile\n";
 	print EXE "sleep 10m\n";
 	close EXE;
 	
