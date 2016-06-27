@@ -1,0 +1,23 @@
+#parameters.txt
+#Modify values as needed accordingly
+
+[INPUT]
+reference=/home/jeffrey.detras/reference/mh63/MH63RS1.LNNK00000000.fa
+temp_dir=/home/jeffrey.detras/scratch2/tmp
+
+[SOFTWARE]
+picard=/home/jeffrey.detras/software/picard-tools-1.119
+gatk=/home/jeffrey.detras/software/GenomeAnalysisTK-3.2-2/GenomeAnalysisTK.jar
+
+[PROCESS]
+bwa_threads=16
+#16 is average and 32 is optimal.
+java_memory=-Xmx8g
+
+[OUTPUT]
+#This option is for the output of GATK Unified Genotyper
+#output modes are:
+# [1] EMIT_VARIANTS_ONLY
+# [2] EMIT_ALL_SITES
+# Default is EMIT_ALL_SITES for the 3k genome project
+vcf_output_mode=EMIT_ALL_SITES
