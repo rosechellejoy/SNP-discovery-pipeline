@@ -4,7 +4,7 @@ use strict;
 #define variables
 my $file=$ARGV[0]; #input file containing genome: fastq pair count  (eg. IRIS_313-9939: 12)
 my $disk=$ARGV[1]; #directory of the fastq files (eg. 07)
-my $analysis_dir="/home/rosechelle.oraa/scripts/bam_processing";
+my $analysis_dir="/home/rosechelle.oraa/analysis";
 my $input_dir="/home/rosechelle.oraa/scratch2/output";
 my $reference_dir="/home/rosechelle.oraa/reference/chrM.fa";
 my $scripts_dir="/home/rosechelle.oraa/scripts";
@@ -32,6 +32,7 @@ while (my $line=readline*FILE){
 	#with a sleep of 60s in between job submission to prevent timeout
 	my $execute="$analysis_dir/$disk/submit_sam2bam_slurm.sh";
 	open EXE, ">>", $execute or die $!;
+	print EXE "#!/bin/bash\n";
 	print EXE "sbatch $outfile\n";
 	print EXE "sleep 10m\n";
 	close EXE;
@@ -46,7 +47,7 @@ while (my $line=readline*FILE){
 	print OUT "#SBATCH --array=1-".$count."\n";
 	print OUT "#SBATCH --partition=batch\n";
 	print OUT "#SBATCH -e ".$genome."-sam2bam.%j.error\n";
-	print OUT "#SBATCH --mail-user=j.detras\@irri.org\n";
+	print OUT "#SBATCH --mail-user=rosechellejoyoraa\@gmail.com\n";
 	print OUT "#SBATCH --mail-type=begin\n";
 	print OUT "#SBATCH --mail-type=end\n";
 	print OUT "#SBATCH --requeue\n";
@@ -55,7 +56,7 @@ while (my $line=readline*FILE){
 	print OUT "module load jdk\n";
 	print OUT "\n";
 	#get the first pair of a fastq file and assign for use
-	print OUT "filename=`find $input_dir/$disk/$genome -name \"*.sam\" | tail -n +\${SLURM_ARRAY_TASK_ID} | head -1`\n";
+	print OUT "filename=`find $input_dir/$genome -name \"*.sam\" | tail -n +\${SLURM_ARRAY_TASK_ID} | head -1`\n";
 	print OUT "\n";
 	#execute the command
 	print OUT "python $scripts_dir/sam2bam.py -s \$filename -r $reference_dir -p $picard -g $gatk -j $jvm -t $tmp_dir";

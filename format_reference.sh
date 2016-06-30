@@ -15,11 +15,14 @@ create_dictionary='software/picard-tools-1.119/CreateSequenceDictionary.jar'
 samtools_faidx='samtools faidx'
 dictionary_output='reference/chrM.dict'
 
+module load bwa/0.7.10-intel
+module load samtools/1.0-intel
 #Index reference (bwa)
-$home/$bwa $home/$reference
+$bwa_index $home/$reference
 
 #Create sequence dictionary (picard)
 java -Xmx8g -jar $home/$create_dictionary REFERENCE=$home/$reference OUTPUT=$home/$dictionary_output
 
 #Create fasta index (samtools)
-$home/$samtools_faidx $home/$reference
+$samtools_faidx $home/$reference
+

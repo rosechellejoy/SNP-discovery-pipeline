@@ -4,8 +4,8 @@ use strict;
 #define variables
 my $file=$ARGV[0]; #input file containing genome: fastq pair count  (eg. IRIS_313-9939: 12)
 my $disk=$ARGV[1]; #directory of the fastq files (eg. 07)
-my $analysis_dir="/home/rosechelle.oraa/slurm-scripts/mh63/alignment";
-my $input_dir="/home/rosechelle.oraa/$file";
+my $analysis_dir="/home/rosechelle.oraa/analysis";
+my $input_dir="/home/rosechelle.oraa/input";
 my $reference_dir="/home/rosechelle.oraa/reference/chrM.fa";
 my $scripts_dir="/home/rosechelle.oraa/scripts";
 my $output_dir="/home/rosechelle.oraa/scratch2/output";
@@ -13,18 +13,19 @@ my $genome="";
 my $count="";
 my $string="";
 
-opendir($input_dir, ".");
-my @files = grep(/1\.fq.gz$/,readdir($input_dir));		#stores all 1.fq.gz in the directory to an array
-closedir($input_dir);
-
-foreach $file (@files) {	#for each file in files, 
-   	$filepath = $file;				
-	$filepath =~ s/1.fq.gz/2.fq.gz/ig;		#replace substring 1.fq.gz with 2.fq.gz
-
-	if (-f $filepath){			#if $file 's pair does not exist
-	  print "$file does not have a pair"
-	}
-}
+#opendir(DIR, $input_dir+"/IRIS_313-10519");
+#my @files = grep(/1\.fq.gz$/,readdir(DIR));		#stores all 1.fq.gz in the directory to an array
+#closedir(DIR);
+my $filepath="";
+my $fi="";
+#foreach $fi (@files) {	#for each file in files, 
+#   	$filepath = $fi;				
+#	$filepath =~ s/1.fq.gz/2.fq.gz/ig;		#replace substring 1.fq.gz with 2.fq.gz
+#
+#	if (-f $filepath){			#if $file 's pair does not exist
+#	  print "$fi does not have a pair"
+#	}
+#}
 
 
 
@@ -34,6 +35,19 @@ while (my $line=readline*FILE){
 	$genome=$1;
 	$count=$2;
 	$count=$count/2; #divide by half to get variable for job array limit
+	
+	opendir(DIR, "$input_dir/$genome");
+	my @files = grep(/1\.fq.gz$/,readdir(DIR));
+	closedir(DIR);
+ 
+	foreach $fi (@files){
+		$filepath = $fi;
+		$filepath =~ s/1.fq.gz/2.fq.gz/ig;
+
+		if (-f $filepath){
+			print "$fi does not have a pair"
+		}
+	}	
 
 	#make individual directory for each genome and put slurm script in that directory
 	system("mkdir $analysis_dir/$disk/$genome");
@@ -43,7 +57,8 @@ while (my $line=readline*FILE){
 	#with a sleep of 60s in between job submission to prevent timeout
 	my $execute="$analysis_dir/$disk/submit_slurm.sh";
 	open EXE, ">>", $execute or die $!;
-	print EXE "\$j = sbatch $outfile\n";
+	print EXE "#!/bin/bash\n";
+	print EXE "sbatch $outfile\n";
 	print EXE "sleep 10m\n";
 	close EXE;
 	
@@ -58,18 +73,19 @@ while (my $line=readline*FILE){
 	print OUT "#SBATCH --array=1-".$count."\n";
 	print OUT "#SBATCH --partition=batch\n";
 	print OUT "#SBATCH -e ".$genome."-fq2sam.%j.error\n";
-	print OUT "#SBATCH --mail-user=j.detras\@irri.org\n";
+	print OUT "#SBATCH --mail-user=rosechellejoyoraa\@gmail.com\n";
 	print OUT "#SBATCH --mail-type=begin\n";
 	print OUT "#SBATCH --mail-type=end\n";
 	print OUT "#SBATCH --requeue\n";
 	print OUT "\n";
+	print OUT "module load bwa/0.7.10-intel\n";
 	print OUT "module load python/2.7.10\n";
 	print OUT "\n";
 	#get the first pair of a fastq file and assign for use
-	print OUT "filename=`find $input_dir/$disk/T11073/Fq/$genome -name \"*1.fq.gz\" | tail -n +\${SLURM_ARRAY_TASK_ID} | head -1`\n";
+	print OUT "filename=`find $input_dir/$genome -name \"*1.fq.gz\" | tail -n +\${SLURM_ARRAY_TASK_ID} | head -1`\n";
 	print OUT "\n";
 	#execute the command
-	print OUT "python $scripts_dir/fq2sam.py -r $reference_dir -p \$filename -o $output_dir/$disk -t \$SLURM_CPUS_PER_TASK\n";
+	print OUT "python $scripts_dir/fq2sam.py -r $reference_dir -p \$filename -o $output_dir -t \$SLURM_CPUS_PER_TASK\n";
 	close OUT;
 }
 close FILE;
