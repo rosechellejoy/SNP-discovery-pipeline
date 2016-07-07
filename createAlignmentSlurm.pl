@@ -12,10 +12,6 @@ my $scripts_dir="";
 my $output_dir="";
 my $genome="";
 my $count="";
-my $string="";
-my $filepath="";
-my $fi="";
-my $tmp_fi="";
 my $email="";
 
 my $fp = 'config';
@@ -54,21 +50,7 @@ while (my $line=readline*FILE){
 	$line=~/(.*):(.*)/; #get the genome/accession/variety name and the fastq pair count
 	$genome=$1;
 	$count=$2;
-	$count=$count/2; #divide by half to get variable for job array limit
-	
-	opendir(DIR, "$input_dir/$genome");
-	my @files = grep(/1\.fq.gz$/,readdir(DIR));
-	closedir(DIR);
-	 
-	foreach $fi (@files){
-		$filepath = "$input_dir/$genome/";
-		$tmp_fi=$fi;
-		$tmp_fi =~ s/1.fq.gz/2.fq.gz/ig;
-
-		if (not -f "$filepath/$tmp_fi"){
-			print "$fi does not have a pair\n"
-		}
-	}	
+	$count=$count/2; #divide by half to get variable for job array limit	
 
 	#make individual directory for each genome and put slurm script in that directory
 	system("mkdir $analysis_dir/$disk/$genome");

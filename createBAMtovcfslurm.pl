@@ -13,8 +13,8 @@ my $gatk="";
 my $tmp_dir="";
 my $email="";
 my $genome="";
-my $tabix_dir="";
-my $bgzip_dir="";
+my $tabix="";
+my $bgzip="";
 my $fp = 'config';
 open my $info, $fp or die "Could not open $fp: $!";
 
@@ -55,13 +55,13 @@ while(my $line = <$info>){
                 $tmp_dir=(split '=', $line)[-1];
                 chomp($tmp_dir);
         }
-	elsif($line =~ m/bgzip_dir/){
-                $bgzip_dir=(split '=', $line)[-1];
-                chomp($bgzip_dir);
+	elsif($line =~ m/bgzip/){
+                $bgzip=(split '=', $line)[-1];
+                chomp($bgzip);
         }
-        elsif($line =~ m/tabix_dir/){
-                $tabix_dir=(split '=', $line)[-1];
-                chomp($tabix_dir);
+        elsif($line =~ m/tabix/){
+                $tabix=(split '=', $line)[-1];
+                chomp($tabix);
         }
 
 }
@@ -96,7 +96,7 @@ while (my $line=readline*FILE){
 	print OUT "module load jdk\n";
 	print OUT "module load samtools/1.0-intel\n";
 	print OUT "\n";
-	print OUT "python $scripts_dir/bam2vcf.py -b $output_dir/$genome/*.merged.bam -r $reference_dir -g $gatk -t $tmp_dir -z $bgzip_dir -x $tabix_dir";
+	print OUT "python $scripts_dir/bam2vcf.py -b $output_dir/$genome/*.merged.bam -r $reference_dir -g $gatk -t $tmp_dir -z $bgzip -x $tabix";
 	close OUT;
 }
 close FILE;	

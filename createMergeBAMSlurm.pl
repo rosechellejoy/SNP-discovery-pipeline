@@ -57,7 +57,7 @@ while (my $line=readline*FILE){
 	open OUT, ">", $outfile or die $!;
 	print OUT "#!/bin/bash\n";
 	print OUT "\n";
-	print OUT "#SBATCH -J ".$genome."-mergebam\n";
+	print OUT "#SBATCH -J ".$genome."\n";
 	print OUT "#SBATCH -o ".$genome."-mergebam.%j.out\n";	
 	print OUT "#SBATCH --partition=batch\n";
 	print OUT "#SBATCH -e ".$genome."-mergebam.%j.error\n";

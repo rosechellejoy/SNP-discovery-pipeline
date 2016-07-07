@@ -90,7 +90,7 @@ while (my $line=readline*FILE){
 	open OUT, ">", $outfile or die $!;
 	print OUT "#!/bin/bash\n";
 	print OUT "\n";
-	print OUT "#SBATCH -J ".$genome."-sam2bam\n";
+	print OUT "#SBATCH -J ".$genome."\n";
 	print OUT "#SBATCH -o ".$genome."-sam2bam.%j.out\n";
 	print OUT "#SBATCH --cpus-per-task=6\n"; #use this for multithreading 	
 	print OUT "#SBATCH --array=1-".$count."\n";
