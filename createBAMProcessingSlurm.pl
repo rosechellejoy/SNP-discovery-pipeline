@@ -4,18 +4,67 @@ use strict;
 #define variables
 my $file=$ARGV[0]; #input file containing genome: fastq pair count  (eg. IRIS_313-9939: 12)
 my $disk=$ARGV[1]; #directory of the fastq files (eg. 07)
-my $analysis_dir="/home/rosechelle.oraa/analysis";
-my $input_dir="/home/rosechelle.oraa/scratch2/output";
-my $reference_dir="/home/rosechelle.oraa/reference/chrM.fa";
-my $scripts_dir="/home/rosechelle.oraa/scripts";
-my $output_dir="/home/rosechelle.oraa/scratch2/output";
-my $picard="/home/rosechelle.oraa/software/picard-tools-1.119";
-my $gatk="/home/rosechelle.oraa/software/GenomeAnalysisTK-3.2-2/GenomeAnalysisTK.jar";
+my $analysis_dir="";
+my $input_dir="";
+my $reference_dir="";
+my $scripts_dir="";
+my $output_dir="";
+my $software="";
+my $picard="";
+my $gatk="";
 my $jvm="8g";
-my $tmp_dir="/home/rosechelle.oraa/scratch2/tmp";
+my $tmp_dir="";
 my $genome="";
 my $count="";
+my $email="";
 
+my $fp= 'config';
+open my $info, $fp or die "Could not open $fp: $!";
+
+while( my $line = <$info>){
+	if($line =~ m/analysis_dir/){
+		$analysis_dir=(split '=', $line)[-1];
+		chomp($analysis_dir);
+	}
+	elsif($line =~ m/input_dir/){
+		$input_dir=(split '=', $line)[-1];
+		chomp($input_dir);
+	}
+	elsif($line =~ m/reference_dir/){
+		$reference_dir=(split '=', $line)[-1];
+		chomp($reference_dir);	
+	}
+	elsif($line =~ m/scripts_dir/){
+		$scripts_dir=(split '=', $line)[-1];
+		chomp($scripts_dir);
+	}
+	elsif($line =~ m/output_dir/){
+		$output_dir=(split '=', $line)[-1];
+		chomp($output_dir);
+	}
+	elsif($line =~ m/tmp_dir/){
+		$tmp_dir=(split '=', $line)[-1];
+		chomp($tmp_dir);
+	}
+	elsif($line =~ m/picard/){
+		$picard=(split '=', $line)[-1];	
+		chomp($picard);
+	}
+	elsif($line =~ m/gatk/){
+		$gatk=(split '=', $line)[-1];
+		chomp($gatk);		
+	}
+	elsif($line =~ m/email/){
+		$email=(split '=', $line)[-1];
+		chomp($email);
+	}
+	elsif($line =~ m/software_dir/){
+		$software=(split '=', $line)[-1];
+		chomp($software);
+	}
+	
+}
+close($fp);
 
 open FILE, $file or die $!;
 while (my $line=readline*FILE){
@@ -47,16 +96,17 @@ while (my $line=readline*FILE){
 	print OUT "#SBATCH --array=1-".$count."\n";
 	print OUT "#SBATCH --partition=batch\n";
 	print OUT "#SBATCH -e ".$genome."-sam2bam.%j.error\n";
-	print OUT "#SBATCH --mail-user=rosechellejoyoraa\@gmail.com\n";
+	print OUT "#SBATCH --mail-user=$email\n";
 	print OUT "#SBATCH --mail-type=begin\n";
 	print OUT "#SBATCH --mail-type=end\n";
 	print OUT "#SBATCH --requeue\n";
+	#print OUT "#SBATCH -N 3\n";
 	print OUT "\n";
 	print OUT "module load python\n";
 	print OUT "module load jdk\n";
 	print OUT "\n";
 	#get the first pair of a fastq file and assign for use
-	print OUT "filename=`find $input_dir/$genome -name \"*.sam\" | tail -n +\${SLURM_ARRAY_TASK_ID} | head -1`\n";
+	print OUT "filename=`find $output_dir/$genome -name \"*.sam\" | tail -n +\${SLURM_ARRAY_TASK_ID} | head -1`\n";
 	print OUT "\n";
 	#execute the command
 	print OUT "python $scripts_dir/sam2bam.py -s \$filename -r $reference_dir -p $picard -g $gatk -j $jvm -t $tmp_dir";

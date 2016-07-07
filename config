@@ -1,0 +1,20 @@
+[DIRECTORIES]
+input_dir=/home/rosechelle.oraa/input
+reference_dir=/home/rosechelle.oraa/reference/chrM.fa
+software_dir=/home/rosechelle.oraa/software
+output_dir=/home/rosechelle.oraa/scratch2/output
+analysis_dir=/home/rosechelle.oraa/analysis
+scripts_dir=/home/rosechelle.oraa/scripts
+tmp_dir=/home/rosechelle.oraa/scratch2/tmp
+disk=01
+
+[SOFTWARE]
+picard=/home/rosechelle.oraa/software/picard-tools-1.119
+gatk=/home/rosechelle.oraa/software/GenomeAnalysisTK-3.2-2/GenomeAnalysisTK.jar
+samtools=samtools faidx
+bwa=bwa index
+bgzip_dir=bgzip
+tabix_dir=tabix
+
+[SLURM PARAMETERS]
+email=rosechellejoyoraa@gmail.com

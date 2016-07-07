@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import sys, re, getopt, os, subprocess, string
+import sys, re, getopt, os, subprocess
 
 def main(argv):
 
@@ -8,14 +8,16 @@ def main(argv):
     try:
         opts, args = getopt.getopt(
             argv,
-            "hb:r:g:t:",
-            ["bam=", "ref=", "gatk=", "temp"])
+            "hb:r:g:t:z:x:",
+            ["bam=", "ref=", "gatk=", "temp=", "bgzip", "tabix"])
     except getopt.GetoptError:
         print 'bam2vcf.py ' + \
                 '-b <BAM file> ' + \
                 '-r <reference> ' + \
                 '-g <gatk> ' + \
-                '-t <temp_dir>'
+                '-t <temp_dir> ' + \
+                '-z <bgzip> ' + \
+                '-x <tabix>'
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
@@ -23,7 +25,9 @@ def main(argv):
                     '-b <BAM file> ' + \
                     '-r <reference> ' + \
                     '-g <gatk> ' + \
-                    '-t <temp_dir>'
+                    '-t <temp_dir> ' + \
+                    '-z <bgzip> ' + \
+                    '-x <tabix>'
             sys.exit()
         elif opt in ("-b", "--bamfile"):
             bam = arg
@@ -33,12 +37,16 @@ def main(argv):
             gatk = arg
         elif opt in ("-t", "--temp_dir"):
             temp_dir = arg
+        elif opt in ("-z", "bgzip"):
+            bgzip = arg
+        elif opt in ("-x", "tabix"):
+            tabix = arg
                
-    vcf = bam.replace('bam', 'vcf')
+    vcf = bam.replace('merged.bam', 'vcf')
     
     subprocess.call(['java', '-Xmx8g',
             '-Djava.io.tmpdir=' + temp_dir,
-            '-jar', gatk,
+           '-jar', gatk,
             '-T', 'UnifiedGenotyper',
             '-R', reference,
             '-I', bam,
@@ -48,6 +56,10 @@ def main(argv):
             '-gt_mode', 'DISCOVERY',
             '-out_mode', 'EMIT_ALL_SITES',
             '-nt', '8'])
-    
+
+    vcfgz = vcf.replace('vcf', 'vcf.gz')
+    subprocess.call([bgzip, vcf])
+    subprocess.call([tabix, vcfgz])
+
 if __name__ == "__main__":
     main(sys.argv[1:])

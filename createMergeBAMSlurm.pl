@@ -3,12 +3,42 @@ use strict;
 
 my $file=$ARGV[0];
 my $disk=$ARGV[1];
-my $analysis_dir="/home/rosechelle.oraa/analysis";
-my $input_dir="/home/rosechelle.oraa/input";
-my $reference_dir="/home/rosechelle.oraa/reference";
-my $scripts_dir="/home/rosechelle.oraa/scripts";
-my $output_dir="/home/rosechelle.oraa/scratch2/output";
+my $analysis_dir="";
+my $input_dir="";
+my $reference_dir="";
+my $scripts_dir="";
+my $output_dir="";
 my $genome="";
+my $email="";
+my $fp = 'config';
+open my $info, $fp or die "Could not open $fp: $!";
+
+while(my $line=<$info>){
+	if($line =~ m/analysis_dir/){
+		$analysis_dir=(split '=', $line)[-1];
+		chomp($analysis_dir);
+	}
+	elsif($line =~ m/input_dir/){
+		$input_dir=(split '=', $line)[-1];
+		chomp($input_dir);
+	}
+	elsif($line =~ m/reference_dir/){
+		$reference_dir=(split '=', $line)[-1];
+		chomp($reference_dir);
+	}
+	elsif($line =~ m/scripts_dir/){
+		$scripts_dir=(split '=', $line)[-1];
+		chomp($scripts_dir);
+	}
+	elsif($line =~ m/output_dir/){
+		$output_dir=(split '=', $line)[-1];
+		chomp($output_dir);
+	}
+	elsif($line =~ m/email/){
+		$email=(split '=', $line)[-1];
+		chomp($email);
+	}
+}
 
 open FILE, $file or die $!;
 while (my $line=readline*FILE){
@@ -31,7 +61,7 @@ while (my $line=readline*FILE){
 	print OUT "#SBATCH -o ".$genome."-mergebam.%j.out\n";	
 	print OUT "#SBATCH --partition=batch\n";
 	print OUT "#SBATCH -e ".$genome."-mergebam.%j.error\n";
-	print OUT "#SBATCH --mail-user=rosechellejoyoraa\@gmail.com\n";
+	print OUT "#SBATCH --mail-user=$email\n";
 	print OUT "#SBATCH --mail-type=begin\n";
 	print OUT "#SBATCH --mail-type=end\n";
 	print OUT "#SBATCH --requeue\n";
