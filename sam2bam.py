@@ -97,8 +97,9 @@ def main(argv):
     os.system(run_mark_dup)
 
     #4. ADD OR REPLACE GROUPS
-    get_rgid = re.search(r'/.*/.*/.*/.*/(.*)/.*sam', sam, re.M)
-    rgid = get_rgid.group(1)
+    #get_rgid = re.search(r'/.*/.*/.*/.*/(.*)/.*sam', sam, re.M)
+    get_rgid = re.search(r'(.*/)(.*)/.*sam', sam, re.M)
+    rgid = get_rgid.group(2)
     pl = 'ILLUMINA'
     sm = rgid.lower()
     rg_params = 'RGID=' + rgid + ' LB=' +rgid + ' RGPU=' + rgid + \
