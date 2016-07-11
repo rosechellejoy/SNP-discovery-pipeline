@@ -13,8 +13,8 @@ picard=/home/rosechelle.oraa/software/picard-tools-1.119
 gatk=/home/rosechelle.oraa/software/GenomeAnalysisTK-3.2-2/GenomeAnalysisTK.jar
 samtools=samtools faidx
 bwa=bwa index
-bgzip_dir=bgzip
-tabix_dir=tabix
+bgzip=bgzip
+tabix=tabix
 
 [SLURM PARAMETERS]
 email=rosechellejoyoraa@gmail.com

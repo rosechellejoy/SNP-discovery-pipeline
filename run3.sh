@@ -11,8 +11,8 @@ inc_pairs=false
 #check if read pairs are complete
 while read -r line		#read each line
 do
-        IFS=':' read -ra info <<< "$line" #split, get each genome
-        for pair in `ls $input_dir/$info`
+	IFS=':' read -ra info <<< "$line" #split, get each genome
+	for pair in `ls $input_dir/$info`
 		do
 			if [[ $pair == *"1.fq.gz"* ]]
 			then
@@ -29,7 +29,6 @@ do
 			fi
 		done
 done < "$filename"
-
 
 if [ "$inc_pairs" = true ]	#if there are incomplete pairs
 then
@@ -48,12 +47,12 @@ do
 	IFS=':' read -ra info <<< "$line" #split, get each genome
 	job=`ls $analysis_dir/$disk/$info/*fq2sam.* `
 
-        #submit *fq2sam. to the job scheduler, set format_reference as its dependency
-        dep=$(sbatch --dependency=afterok:${format##* } $job)
+	#submit *fq2sam. to the job scheduler, set format_reference as its dependency
+	dep=$(sbatch --dependency=afterok:${format##* } $job)
 	samtobam=${job/fq2sam./sam2bam.}
 	#submit its corresponding sam2bam to the job scheduler w/ fq2sam as its dependency
 	sbatch --dependency=afterok:${dep##* } $samtobam
-        sleep 5        
+	sleep 5m        
 done < "$filename"
 
 while read -r line
@@ -61,10 +60,10 @@ do
 	IFS=':' read -ra info <<< "$line" #split, get each genome
 	job=`ls $analysis_dir/$disk/$info/*mergebam.* `
         
-        #submit *mergebam. to the job scheduler, set all sam2bam of the same genome as its dependency
-        dep=$(sbatch --dependency=singleton $job)
-        bamtovcf=${job/mergebam./bam2vcf.}
-        #submit its corresponding bam2vcf to the job scheduler w/ mergebam as its dependency
-        sbatch --dependency=afterok:${dep##* } $bamtovcf
-        sleep 5
+	#submit *mergebam. to the job scheduler, set all sam2bam of the same genome as its dependency
+	dep=$(sbatch --dependency=singleton $job)
+	bamtovcf=${job/mergebam./bam2vcf.}
+	#submit its corresponding bam2vcf to the job scheduler w/ mergebam as its dependency
+	sbatch --dependency=afterok:${dep##* } $bamtovcf
+	sleep 5m
 done < "$filename"

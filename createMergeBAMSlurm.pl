@@ -44,7 +44,7 @@ open FILE, $file or die $!;
 while (my $line=readline*FILE){
 	$line=~/(.*):(.*)/;
 	$genome=$1;
-
+	
 	my $outfile="$analysis_dir/$disk/$genome/$genome"."-mergebam.slurm";
 
 	my $execute="$analysis_dir/$disk/submit_mergebam_slurm.sh";
@@ -69,7 +69,8 @@ while (my $line=readline*FILE){
 	print OUT "\n";
 	print OUT "module load samtools/1.0-intel\n";
 	print OUT "\n";
-	print OUT "perl $scripts_dir/mergebam.pl $output_dir $genome";
+	print OUT "perl $scripts_dir/mergebam.pl $output_dir $genome\n";
+	print OUT "mv $genome-sam2bam.*.error $genome-sam2bam.*.out $analysis_dir/$disk/$genome/logs";
 	close OUT;
 }
 close FILE;

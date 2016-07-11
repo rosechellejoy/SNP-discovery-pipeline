@@ -75,6 +75,7 @@ while (my $line=readline*FILE){
 
 	#make individual directory for each genome and put slurm script in that directory
 	system("mkdir $analysis_dir/$disk/$genome");
+	system("mkdir $analysis_dir/$disk/$genome/logs");
 	my $outfile="$analysis_dir/$disk/$genome/$genome"."-sam2bam.slurm";
 	
 	#create a submit shell script containing the slurm script for each genome
@@ -110,6 +111,7 @@ while (my $line=readline*FILE){
 	print OUT "\n";
 	#execute the command
 	print OUT "python $scripts_dir/sam2bam.py -s \$filename -r $reference_dir -p $picard -g $gatk -j $jvm -t $tmp_dir";
+	print OUT "mv $genome-fq2sam.*.out $genome-fq2sam.*.error $analysis_dir/$disk/$genome/logs";
 	close OUT;
 }
 close FILE;

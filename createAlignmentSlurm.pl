@@ -89,7 +89,7 @@ while (my $line=readline*FILE){
 	print OUT "filename=`find $input_dir/$genome -name \"*1.fq.gz\" | tail -n +\${SLURM_ARRAY_TASK_ID} | head -1`\n";
 	print OUT "\n";
 	#execute the command
-	print OUT "python $scripts_dir/fq2sam.py -r $reference_dir -p \$filename -o $output_dir -t \$SLURM_CPUS_PER_TASK\n";
+	print OUT "python $scripts_dir/fq2sam.py -r $reference_dir -p \$filename -o $output_dir -t \$SLURM_CPUS_PER_TASK\n";	
 	close OUT;
 }
 close FILE;

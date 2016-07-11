@@ -96,7 +96,8 @@ while (my $line=readline*FILE){
 	print OUT "module load jdk\n";
 	print OUT "module load samtools/1.0-intel\n";
 	print OUT "\n";
-	print OUT "python $scripts_dir/bam2vcf.py -b $output_dir/$genome/*.merged.bam -r $reference_dir -g $gatk -t $tmp_dir -z $bgzip -x $tabix";
+	print OUT "python $scripts_dir/bam2vcf.py -b $output_dir/$genome/*.merged.bam -r $reference_dir -g $gatk -t $tmp_dir -z $bgzip -x $tabix\n";	
+	print OUT "mv $genome-mergebam.*.error $genome-mergebam.*.out $analysis_dir/$disk/$genome";
 	close OUT;
 }
 close FILE;	
