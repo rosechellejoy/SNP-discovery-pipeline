@@ -74,7 +74,7 @@ while (my $line=readline*FILE){
 	$count=$count/2; #divide by half to get variable for job array limit
 
 	#make individual directory for each genome and put slurm script in that directory
-	system("mkdir $analysis_dir/$disk/$genome");
+	
 	system("mkdir $analysis_dir/$disk/$genome/logs");
 	my $outfile="$analysis_dir/$disk/$genome/$genome"."-sam2bam.slurm";
 	
@@ -110,7 +110,7 @@ while (my $line=readline*FILE){
 	print OUT "filename=`find $output_dir/$genome -name \"*.sam\" | tail -n +\${SLURM_ARRAY_TASK_ID} | head -1`\n";
 	print OUT "\n";
 	#execute the command
-	print OUT "python $scripts_dir/sam2bam.py -s \$filename -r $reference_dir -p $picard -g $gatk -j $jvm -t $tmp_dir";
+	print OUT "python $scripts_dir/sam2bam.py -s \$filename -r $reference_dir -p $picard -g $gatk -j $jvm -t $tmp_dir\n";
 	print OUT "mv $genome-fq2sam.*.out $genome-fq2sam.*.error $analysis_dir/$disk/$genome/logs";
 	close OUT;
 }

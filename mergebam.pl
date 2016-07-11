@@ -5,17 +5,41 @@ my $starttime=localtime();
 print "Start time: $starttime\n";
 #directories
 
-my $refDir="/home/rosechelle.oraa/reference";
-my $softwareDir="/home/rosechelle.oraa/software";
+my $refDir="";
+my $softwareDir="";
 my $refSeq=$ARGV[2]; #"os.ir64.cshl.draft.1.0.scaffold.fa";
 my $refGenome=$ARGV[3]; #"indica/ir64";
-my $samtools="samtools-1.0";
-my $gatk="GenomeAnalysisTK-3.2-2";
+my $samtools="";
+my $gatk="";
 my $javaMemory="-Xmx8g";
 my $vcfOutMode="EMIT_ALL_SITES";
 
 my $outputDir=$ARGV[0];
 my $rawDir=$ARGV[1];
+
+my $fp = 'config';
+open my $info, $fp or die "Could not open $fp: $!";
+
+while( my $line = <$info>)  {
+        if ($line =~ m/reference_dir/) {
+                $refDir=(split '=', $line)[-1];
+                chomp($refDir);           
+        }
+	elsif($line =~ m/gatk/){
+                $gatk=(split '=', $line)[-1];
+                chomp($gatk);           
+        }
+	elsif($line =~ m/software_dir/){
+                $softwareDir=(split '=', $line)[-1];
+                chomp($softwareDir);
+        }
+	elsif($line =~ m/samtools/){
+                $samtools=(split '=', $line)[-1];
+                chomp($samtools);
+        }
+}
+close($fp);
+
 
 #print "Removing intermdediate files...\n";
 #system("rm $outputDir/$rawDir/*.sam");

@@ -10,8 +10,6 @@
 
 conf=`grep -n "reference_dir" config`
 reference=${conf##*=}
-conf=`grep -n "software_dir" config`
-software_dir=${conf##*=}
 conf=`grep -n "bwa" config`
 bwa_index=${conf##*=}
 conf=`grep -n "picard" config`
@@ -28,7 +26,7 @@ module load jdk
 $bwa_index $home/$reference
 
 #Create sequence dictionary (picard)
-java -Xmx8g -jar $software_dir/$create_dictionary/CreateSequenceDictionary.jar REFERENCE=$reference OUTPUT=$dictionary_output
+java -Xmx8g -jar $create_dictionary/CreateSequenceDictionary.jar REFERENCE=$reference OUTPUT=$dictionary_output
 
 #Create fasta index (samtools)
 $samtools_faidx $reference
