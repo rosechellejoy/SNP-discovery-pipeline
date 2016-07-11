@@ -1,29 +1,20 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+#Instructions on how to use the SNP Discovery Pipeline:
 
-### What is this repository for? ###
+1.	create the following folders:
+	-> scripts
+	-> output
+	-> input **containing all the input reads
+	-> reference **containing the reference genome
+	-> analysis
 
-* Quick summary: Running the variant calling pipeline in ASTI with specific SLURM job scheduler requirement
-* Version: 0.1
-* * Scripts only up to alignment step. Next version to update with BAM processing.
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+2. 	have a copy of the scripts needed by cloning the repository
+	https://github.com/rosechellejoy/SNP-discovery-pipeline	
 
-### How do I get set up? ###
+3.	modify the values in the "config" text file.
 
-* Summary of set up
-* Configuration
-* * Create directories for scripts, reference, software, output
-* * Run format_reference.sh 
-* * Run createAlignmentSlurm.pl
-* * Run submit_slurm.sh created in by createAlignmentSlurm.pl
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+4. 	modify the values in input.info and enumerate all the input genomes with the number or reads e.g(IRIS_313-10519:12) 
+    **one genome per line
 
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
+5.  On the scripts folder, enter "sbatch snp.sh" on the command line.
