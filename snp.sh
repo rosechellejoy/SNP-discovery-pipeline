@@ -52,7 +52,7 @@ do
 	samtobam=${job/fq2sam./sam2bam.}
 	#submit its corresponding sam2bam to the job scheduler w/ fq2sam as its dependency
 	sbatch --dependency=afterok:${dep##* } $samtobam
-	#sleep 5m        
+	sleep 3m        
 done < "$filename"
 
 while read -r line
@@ -65,5 +65,5 @@ do
 	bamtovcf=${job/mergebam./bam2vcf.}
 	#submit its corresponding bam2vcf to the job scheduler w/ mergebam as its dependency
 	sbatch --dependency=afterok:${dep##* } $bamtovcf
-	#sleep 5m
+	sleep 3m
 done < "$filename"
