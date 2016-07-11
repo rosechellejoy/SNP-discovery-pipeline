@@ -53,6 +53,7 @@ while (my $line=readline*FILE){
 	$count=$count/2; #divide by half to get variable for job array limit	
 
 	#make individual directory for each genome and put slurm script in that directory
+	system("mkdir $analysis_dir/$disk");
 	system("mkdir $analysis_dir/$disk/$genome");
 	my $outfile="$analysis_dir/$disk/$genome/$genome"."-fq2sam.slurm";
 	
@@ -86,6 +87,7 @@ while (my $line=readline*FILE){
 	print OUT "module load python/2.7.10\n";
 	print OUT "\n";
 	#get the first pair of a fastq file and assign for use
+	#print OUT "mkdir $output_dir"
 	print OUT "filename=`find $input_dir/$genome -name \"*1.fq.gz\" | tail -n +\${SLURM_ARRAY_TASK_ID} | head -1`\n";
 	print OUT "\n";
 	#execute the command
