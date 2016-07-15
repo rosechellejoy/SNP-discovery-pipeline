@@ -7,7 +7,8 @@ conf=`grep -n "input_dir" config`
 input_dir=${conf##*=}
 filename="input.info"
 inc_pairs=false
-count=0
+
+mkdir $analysis_dir/$disk
 #check if read pairs are complete
 while read -r line		#read each line
 do
@@ -34,8 +35,8 @@ if [ "$inc_pairs" = true ]	#if there are incomplete pairs
 then
 	exit $			#exit program
 fi
-
-format=$(sbatch format_reference.sh)		#format reference
+perl createformat_reference.pl
+format=$(sbatch format.sh)		#format reference
 
 perl createAlignmentSlurm.pl $filename $disk		#create slurm scripts for each step
 perl createBAMProcessingSlurm.pl $filename $disk
@@ -50,7 +51,6 @@ do
 	#submit *fq2sam. to the job scheduler, set format_reference as its dependency
 	dep=$(sbatch --dependency=afterok:${format##* } $job)
 	 
-	#(( count++ ))
 	samtobam=${job/fq2sam./sam2bam.}
 	#submit its corresponding sam2bam to the job scheduler w/ fq2sam as its dependency
 	sbatch --dependency=afterok:${dep##* } $samtobam
