@@ -6,6 +6,7 @@ output_dir=${conf##*=}
 conf=`grep -n "disk" config`
 disk=${conf##*=}
 
+rm log.txt
 while read -r line
 do
 	IFS=':' read -ra info <<< "$line"
