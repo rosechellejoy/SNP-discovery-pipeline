@@ -17,7 +17,7 @@ my $tmp_dir="";
 my $genome="";
 my $count="";
 my $email="";
-
+my $partition="";
 my $fp= 'config';
 open my $info, $fp or die "Could not open $fp: $!";
 
@@ -62,7 +62,10 @@ while( my $line = <$info>){
 		$software=(split '=', $line)[-1];
 		chomp($software);
 	}
-	
+	elsif($line =~ m/partition/){
+                $partition=(split '=', $line)[-1];
+                chomp($partition);
+        }
 }
 close($fp);
 
@@ -95,7 +98,7 @@ while (my $line=readline*FILE){
 	print OUT "#SBATCH -o ".$genome."-sam2bam.%j.out\n";
 	print OUT "#SBATCH --cpus-per-task=6\n"; #use this for multithreading 	
 	print OUT "#SBATCH --array=1-".$count."\n";
-	print OUT "#SBATCH --partition=batch\n";
+	print OUT "#SBATCH --partition=$partition\n";
 	print OUT "#SBATCH -e ".$genome."-sam2bam.%j.error\n";
 	print OUT "#SBATCH --mail-user=$email\n";
 	print OUT "#SBATCH --mail-type=begin\n";
@@ -111,7 +114,7 @@ while (my $line=readline*FILE){
 	print OUT "\n";
 	#execute the command
 	print OUT "python $scripts_dir/sam2bam.py -s \$filename -r $reference_dir -p $picard -g $gatk -j $jvm -t $tmp_dir\n";
-	print OUT "mv $genome-fq2sam.*.out $genome-fq2sam.*.error $analysis_dir/$disk/$genome/logs";
+	print OUT "mv $genome-fq2sam.*.error $genome-fq2sam.*.out $analysis_dir/$disk/$genome/logs";	
 	close OUT;
 }
 close FILE;

@@ -13,7 +13,7 @@ my $output_dir="";
 my $genome="";
 my $count="";
 my $email="";
-
+my $partition="";
 my $fp = 'config';
 open my $info, $fp or die "Could not open $fp: $!";
 
@@ -42,6 +42,10 @@ while( my $line = <$info>)  {
 		$email=(split '=', $line)[-1];
 		chomp($email);
 	}
+	elsif($line =~ m/partition/){
+                $partition=(split '=', $line)[-1];
+                chomp($partition);
+        }
 }
 close($fp);
 
@@ -75,7 +79,7 @@ while (my $line=readline*FILE){
 	#print OUT "#SBATCH -n 1\n";
 	print OUT "#SBATCH --cpus-per-task=8\n"; #use this for multithreading 	
 	print OUT "#SBATCH --array=1-".$count."\n";
-	print OUT "#SBATCH --partition=batch\n";
+	print OUT "#SBATCH --partition=$partition\n";
 	print OUT "#SBATCH -e ".$genome."-fq2sam.%j.error\n";
 	print OUT "#SBATCH --mail-user=$email\n";
 	print OUT "#SBATCH --mail-type=begin\n";
@@ -92,7 +96,6 @@ while (my $line=readline*FILE){
 	print OUT "\n";
 	#execute the command
 	print OUT "python $scripts_dir/fq2sam.py -r $reference_dir -p \$filename -o $output_dir -t \$SLURM_CPUS_PER_TASK\n";	
-	#print OUT "mv $genome-fq2sam.*.out $genome-fq2sam.*.error $analysis_dir/$disk/$genome/logs";
 	close OUT;
 }
 close FILE;

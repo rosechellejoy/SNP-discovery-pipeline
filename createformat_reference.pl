@@ -69,4 +69,5 @@ print OUT "bwa index -a is $reference_dir\n\n";
 print OUT "java -Xmx8g -jar $picard/CreateSequenceDictionary.jar REFERENCE=$reference_dir OUTPUT=$dictionary_out\n\n";
 print OUT "samtools faidx $reference_dir\n";
 print OUT "fi";
+
 close OUT;

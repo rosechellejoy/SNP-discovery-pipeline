@@ -15,6 +15,7 @@ my $email="";
 my $genome="";
 my $tabix="";
 my $bgzip="";
+my $partition="";
 my $fp = 'config';
 open my $info, $fp or die "Could not open $fp: $!";
 
@@ -63,7 +64,10 @@ while(my $line = <$info>){
                 $tabix=(split '=', $line)[-1];
                 chomp($tabix);
         }
-
+	elsif($line =~ m/partition/){
+                $partition=(split '=', $line)[-1];
+                chomp($partition);
+        }
 }
 close $fp;
 
@@ -85,7 +89,8 @@ while (my $line=readline*FILE){
 	print OUT "\n";
 	print OUT "#SBATCH -J ".$genome."-bam2vcf\n";
 	print OUT "#SBATCH -o ".$genome."-bam2vcf.%j.out\n";
-	print OUT "#SBATCH --partition=batch\n";
+	print OUT "#SBATCH --cpus-per-task=8\n";
+	print OUT "#SBATCH --partition=$partition\n";
 	print OUT "#SBATCH -e ".$genome."-bam2vcf.%j.error\n";
 	print OUT "#SBATCH --mail-user=$email\n";
 	print OUT "#SBATCH --mail-type=begin\n";

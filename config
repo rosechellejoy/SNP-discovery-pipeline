@@ -1,12 +1,12 @@
 [DIRECTORIES]
-input_dir=/home/rosechelle.oraa/3kRG/irri/10/T11073/Fq
+input_dir=/home/rosechelle.oraa/input
 reference_dir=/home/rosechelle.oraa/reference/MH63RS1.LNNK00000000.fa
 software_dir=/home/rosechelle.oraa/software
 output_dir=/home/rosechelle.oraa/scratch2/output
 analysis_dir=/home/rosechelle.oraa/analysis
 scripts_dir=/home/rosechelle.oraa/scripts
 tmp_dir=/home/rosechelle.oraa/scratch2/tmp
-disk=10
+disk=01
 
 [SOFTWARE]
 picard=/home/rosechelle.oraa/software/picard-tools-1.119

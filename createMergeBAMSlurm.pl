@@ -10,6 +10,7 @@ my $scripts_dir="";
 my $output_dir="";
 my $genome="";
 my $email="";
+my $partition="";
 my $fp = 'config';
 open my $info, $fp or die "Could not open $fp: $!";
 
@@ -38,6 +39,10 @@ while(my $line=<$info>){
 		$email=(split '=', $line)[-1];
 		chomp($email);
 	}
+	elsif($line =~ m/partition/){
+                $partition=(split '=', $line)[-1];
+                chomp($partition);
+        }
 }
 
 open FILE, $file or die $!;
@@ -58,8 +63,9 @@ while (my $line=readline*FILE){
 	print OUT "#!/bin/bash\n";
 	print OUT "\n";
 	print OUT "#SBATCH -J ".$genome."\n";
-	print OUT "#SBATCH -o ".$genome."-mergebam.%j.out\n";	
-	print OUT "#SBATCH --partition=batch\n";
+	print OUT "#SBATCH -o ".$genome."-mergebam.%j.out\n";
+	print OUT "#SBATCH --cpus-per-task=6\n";	
+	print OUT "#SBATCH --partition=$partition\n";
 	print OUT "#SBATCH -e ".$genome."-mergebam.%j.error\n";
 	print OUT "#SBATCH --mail-user=$email\n";
 	print OUT "#SBATCH --mail-type=begin\n";
@@ -70,7 +76,7 @@ while (my $line=readline*FILE){
 	print OUT "module load samtools/1.0-intel\n";
 	print OUT "\n";
 	print OUT "perl $scripts_dir/mergebam.pl $output_dir $genome\n";
-	print OUT "mv $genome-sam2bam.*.error $genome-sam2bam.*.out $analysis_dir/$disk/$genome/logs";
+	print OUT "mv $genome-sam2bam*.error $genome-sam2bam.*.out $analysis_dir/$disk/$genome/logs";
 	close OUT;
 }
 close FILE;
