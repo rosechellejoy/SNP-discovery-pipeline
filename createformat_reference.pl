@@ -65,7 +65,7 @@ print OUT "formatted=0\n";
 print OUT "fi\n\n";
 	
 print OUT "if [ \"\$formatted\" -eq 1 ]; then\n";
-print OUT "bwa index $reference_dir\n\n";
+print OUT "bwa index -a is $reference_dir\n\n";
 print OUT "java -Xmx8g -jar $picard/CreateSequenceDictionary.jar REFERENCE=$reference_dir OUTPUT=$dictionary_out\n\n";
 print OUT "samtools faidx $reference_dir\n";
 print OUT "fi";
