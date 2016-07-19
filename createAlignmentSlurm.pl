@@ -17,6 +17,7 @@ my $partition="";
 my $fp = 'config';
 open my $info, $fp or die "Could not open $fp: $!";
 
+#get values from the config file
 while( my $line = <$info>)  {   
 	if ($line =~ m/analysis_dir/) {
 		$analysis_dir=(split '=', $line)[-1];
@@ -57,8 +58,8 @@ while (my $line=readline*FILE){
 	$count=$count/2; #divide by half to get variable for job array limit	
 
 	#make individual directory for each genome and put slurm script in that directory
-	#system("mkdir $analysis_dir/$disk");
 	system("mkdir $analysis_dir/$disk/$genome");
+	system("mkdir $output_dir/$genome");
 	my $outfile="$analysis_dir/$disk/$genome/$genome"."-fq2sam.slurm";
 	
 	#create a submit shell script containing the slurm script for each genome

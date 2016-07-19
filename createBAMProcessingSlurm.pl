@@ -19,6 +19,8 @@ my $count="";
 my $email="";
 my $partition="";
 my $fp= 'config';
+
+#get values from the config file
 open my $info, $fp or die "Could not open $fp: $!";
 
 while( my $line = <$info>){

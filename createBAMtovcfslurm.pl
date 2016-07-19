@@ -19,6 +19,7 @@ my $partition="";
 my $fp = 'config';
 open my $info, $fp or die "Could not open $fp: $!";
 
+#get values from the config file
 while(my $line = <$info>){
 	if ($line =~ m/analysis_dir/) {
                 $analysis_dir=(split '=', $line)[-1];
