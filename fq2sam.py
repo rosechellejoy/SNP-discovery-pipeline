@@ -57,8 +57,8 @@ def main(argv):
     #output directory check
     output_path = output_dir + '/' + genome_dir
     #output_path = output_dir
-    if not os.path.exists(output_path):
-        os.makedirs(output_path)
+    #if not os.path.exists(output_path):
+    #    os.makedirs(output_path)
 
     #command for alignment
     align = 'bwa mem -M -t ' + \
