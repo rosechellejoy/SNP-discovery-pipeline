@@ -94,7 +94,7 @@ while (my $line=readline*FILE){
 	print OUT "#SBATCH --partition=$partition\n";
 	print OUT "#SBATCH -e ".$genome."-bam2vcf.%j.error\n";
 	print OUT "#SBATCH --mail-user=$email\n";
-	print OUT "#SBATCH --mail-type=all\n";
+	print OUT "#SBATCH --mail-type=ALL\n";
 	print OUT "#SBATCH --requeue\n";
 	#print OUT "#SBATCH -N 3\n";
 	print OUT "\n";
