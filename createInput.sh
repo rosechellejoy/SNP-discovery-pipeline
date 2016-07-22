@@ -1,3 +1,7 @@
+#       Filename: createInput.sh
+#       Description: creates input.info containing all genomes with the number of reads for each
+#       Created by: Rosechelle Joy Oraa
+
 #!/bin/bash
 conf=`grep -n "input_dir=" config`
 input_dir=${conf##*=}
