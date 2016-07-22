@@ -1,3 +1,9 @@
+#       Filename: createBAMtovcfSlurm.pl
+#       Description: creates bash scripts that are submitted to the job scheduler
+#               -the bash scripts calls bam2vcf.py to create the vcf file
+#       Parameters: input.info, disk
+#       Created by: Rosechelle Joy Oraa
+
 #!/usr/bin/perl -w
 use strict;
 
