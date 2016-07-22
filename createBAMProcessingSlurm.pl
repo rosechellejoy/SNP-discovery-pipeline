@@ -1,3 +1,10 @@
+#       Filename: createBAMProcessingSlurm.pl
+#       Description: creates bash scripts that are submitted to the job scheduler
+#               -the bash scripts calls sam2bam for the bam processing
+#       Parameters: input.info, disk
+#       Created by: Jeffrey Detras
+#       Modified by: Rosechelle Joy Oraa
+
 #!/usr/bin/perl -w
 use strict;
 
