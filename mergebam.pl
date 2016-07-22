@@ -1,3 +1,9 @@
+#       Filename: mergebam.pl
+#       Description: submits the command for merging bam files
+#       Parameters: output directory, genome dir/raw directory
+#       Created by: Jeffrey Detras
+#	Modified by:  Rosechelle Joy Oraa
+
 #!/usr/bin/perl -w
 use strict;
 
