@@ -1,3 +1,8 @@
+#       Filename: createMergeBAMSlurm.pl
+#       Description: creates bash scripts that are submitted to the job scheduler
+#               -the bash script calls mergebam.pl to produce a merged.bam file
+#       Parameters: input.info, disk
+#       Created by: Rosechelle Joy Oraa
 #!/usr/bin/perl -w
 use strict;
 
