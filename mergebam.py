@@ -1,3 +1,7 @@
+#       Filename: mergebam.pl
+#       Description: submits the command for merging bam files
+#       Parameters: genome directory
+#       Created by: Jeffrey Detras
 #!/usr/bin/python
 
 import sys, getopt, re, os, subprocess
