@@ -1,3 +1,7 @@
+#	Filename: format_reference.sh
+#	Description: formats the reference genome
+#	Created By: Jeffrey Detras
+#	Modified By: Rosechelle Joy Oraa
 #!/bin/bash
 
 #SBATCH -J format_reference
