@@ -1,3 +1,8 @@
+#       Filename: sam2bam.py
+#       Description: submits the commands to create the realign.bam from sam
+#       Parameters: sam file, reference genome, picard software, gatk software, java memory, temp_dir
+#       Created by: Jeffrey Detras
+#	    Modified by:  Rosechelle Joy Oraa
 #!/usr/bin/python
 
 import sys, getopt, re, os, subprocess
