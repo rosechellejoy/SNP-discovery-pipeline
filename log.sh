@@ -1,3 +1,6 @@
+#	Filename: log.sh
+#	Description: creates a text file containing all genomes that were not able to produce the .vcf.gz output
+#	Created By: Rosechelle Joy Oraa
 #!/bin/bash
 
 filename="input.info"
