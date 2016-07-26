@@ -1,10 +1,3 @@
-#	Filename: createAlignmentSlurm.pl
-#	Description: creates bash scripts that are submitted to the job scheduler
-#       	the created script calls the fq2sam.py to execute the  alignment
-#	Parameters: input.info, disk   
-#	Created By: Jeffrey Detras
-#	Modified By: Rosechelle Joy Oraa
-
 #!/usr/bin/perl -w
 use strict;
 use warnings;

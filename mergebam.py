@@ -1,7 +1,3 @@
-#       Filename: mergebam.pl
-#       Description: submits the command for merging bam files
-#       Parameters: genome directory
-#       Created by: Jeffrey Detras
 #!/usr/bin/python
 
 import sys, getopt, re, os, subprocess
@@ -30,13 +26,22 @@ def main(argv):
     if genome:
         genome = genome.group(2)
     mergedbam_output = genome_dir + '/' + genome + '.bam'
-    
+   
+    loadsamtools = 'module load samtools/1.0-intel' 
+    os.system(loadsamtools)
+
     mergebam = 'samtools merge ' + \
         mergedbam_output + ' ' + \
-        genome_dir + '/*.realign.bam'\
+        genome_dir + '/*.realign.bam'
     os.system(mergebam)
 
-    subprocess.call(['samtools', 'index', mergedbam_output]) 
+   
+    #ind = 'samtools ind ' + \
+#	mergedbam_output
 
+    #os.system(ind)
+   
+    subprocess.call(['samtools', 'index', mergedbam_output]) 
+	
 if __name__ == "__main__":
     main(sys.argv[1:])

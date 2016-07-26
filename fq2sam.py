@@ -1,9 +1,3 @@
-#       Filename: fq2sam.py
-#       Description: submits the command for the alignment of a read pair to the reference genome
-#       Parameters: reference genome, read1, read2, output directory, no. of threads
-#       Created by: Jeffrey Detras
-#       Modified by: Rosechelle Joy Oraa
-
 #!/usr/bin/python
 
 import sys, getopt, re, os, subprocess

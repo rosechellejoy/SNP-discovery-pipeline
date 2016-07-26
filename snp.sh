@@ -1,9 +1,4 @@
 #!/bin/bash
-
-#       Filename: snp.sh
-#       Description: manages the submission of the jobs for each step in the pipeline, for each genome
-#			-checks if read pairs are complete
-#       Created by: Rosechelle Joy Oraa
 conf=`grep -n "analysis_dir" config`
 analysis_dir=${conf##*=}
 conf=`grep -n "disk" config`
