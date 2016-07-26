@@ -1,9 +1,3 @@
-#       Filename: mergebam.pl
-#       Description: submits the command for merging bam files
-#       Parameters: output directory, genome dir/raw directory
-#       Created by: Jeffrey Detras
-#	Modified by:  Rosechelle Joy Oraa
-
 #!/usr/bin/perl -w
 use strict;
 
@@ -60,13 +54,19 @@ close($fp);
 #print "Metrics files removed.\n";
 #system("rm $outputDir/$rawDir/*.list");
 #print "List files removed.\n";
+my $no_realign= system("ls $outputDir/$rawDir/*.realign.bam | wc -l");
 
 my $mergeBam="$rawDir.merged.bam";
 if (-e "$outputDir/$rawDir/$mergeBam"){
 	print "$mergeBam already exists.\n";
 } else {
 	print "Merging realigned BAM files...\n";
-	system("samtools merge $outputDir/$rawDir/$mergeBam $outputDir/$rawDir/*.realign.bam");
+	if ($no_realign > 1){
+		system("samtools merge $outputDir/$rawDir/$mergeBam $outputDir/$rawDir/*.realign.bam");
+	}
+	else{
+		system("cp $output_dir/$rawDir/*.realign.bam $outputDir/$rawDir/$mergedBam");
+	}
 	print "Realigned BAM files merged into $mergeBam.\n";
 }
 if (-e "$outputDir/$rawDir/$mergeBam.bai"){

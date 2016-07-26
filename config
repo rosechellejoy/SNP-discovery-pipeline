@@ -1,8 +1,8 @@
 [DIRECTORIES]
 input_dir=/home/rosechelle.oraa/input
-reference_dir=/home/rosechelle.oraa/reference/MH63RS1.LNNK00000000.fa
+reference_dir=/home/rosechelle.oraa/reference/chrM.fa
 software_dir=/home/rosechelle.oraa/software
-output_dir=/home/rosechelle.oraa/scratch2/output
+output_dir=/home/rosechelle.oraa/scratch2/try
 analysis_dir=/home/rosechelle.oraa/analysis
 scripts_dir=/home/rosechelle.oraa/scripts
 tmp_dir=/home/rosechelle.oraa/scratch2/tmp

@@ -1,9 +1,4 @@
 #!/bin/bash
-
-#       Filename: snp.sh
-#       Description: manages the submission of the jobs for each step in the pipeline, for each genome
-#			-checks if read pairs are complete
-#       Created by: Rosechelle Joy Oraa
 conf=`grep -n "analysis_dir" config`
 analysis_dir=${conf##*=}
 conf=`grep -n "disk" config`
@@ -45,8 +40,10 @@ format=$(sbatch format.sh)		#format reference
 
 perl createAlignmentSlurm.pl $filename $disk		#create slurm scripts for each step
 perl createBAMProcessingSlurm.pl $filename $disk
+perl createValidateBAM.pl $filename $disk
 perl createMergeBAMSlurm.pl $filename $disk
 perl createBAMtovcfslurm.pl $filename $disk
+perl createValidateVCF.pl $filename $disk
 
 while read -r line			#read each line to get the genomes
 do
@@ -64,9 +61,19 @@ do
         mergebam=${job/fq2sam./mergebam.}
 	#submit *mergebam. to the job scheduler, set all sam2bam of the same genome as its dependency
 	dep=$(sbatch --dependency=singleton $mergebam)
+	
+	validatebam=${job/fq2sam./validatebam.}
+        #submit its corresponding validatebam to the job scheduler w/ mergebam as its dependency
+        dep=$(sbatch --dependency=afterok:${dep##* } $validatebam)
+	sleep 3m
 
 	bamtovcf=${job/fq2sam./bam2vcf.}
-	#submit its corresponding bam2vcf to the job scheduler w/ mergebam as its dependency
-	sbatch --dependency=afterok:${dep##* } $bamtovcf
+        #submit its corresponding bam2vcf to the job scheduler w/ mergebam as its dependency
+        dep=$(sbatch --dependency=afterok:${dep##* } $bamtovcf)
+
+	validatevcf=${job/fq2sam./validatevcf.}
+	#submit its corresponding validatevcf to the job scheduler w/ bam2vcf as its dependency
+	sbatch --dependency=afterok:${dep##* } $validatevcf
 	sleep 3m
+
 done < "$filename"

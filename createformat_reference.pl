@@ -1,7 +1,3 @@
-#       Filename: createformat_reference.pl
-#       Description: creates a bash scripts that formats the reference genome
-#       Created by: Rosechelle Joy Oraa
-
 #!/usr/bin/perl -w
 use strict;
 

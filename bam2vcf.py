@@ -1,7 +1,3 @@
-#       Filename:bam2vcf.py
-#       Description:submits the command to create a vcf file given a bam file
-#       Parameters: BAM file, reference, gatk, temp_dir, bgzip, tabix
-#       Created by : Jeffrey Detras
 #!/usr/bin/python
 
 import sys, re, getopt, os, subprocess

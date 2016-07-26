@@ -1,6 +1,3 @@
-#	Filename: log.sh
-#	Description: creates a text file containing all genomes that were not able to produce the .vcf.gz output
-#	Created By: Rosechelle Joy Oraa
 #!/bin/bash
 
 filename="input.info"
@@ -8,7 +5,6 @@ conf=`grep -n "output_dir" config`
 output_dir=${conf##*=}
 conf=`grep -n "disk" config`
 disk=${conf##*=}
-
 rm log.txt
 while read -r line
 do
